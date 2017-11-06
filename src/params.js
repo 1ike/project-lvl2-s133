@@ -1,8 +1,8 @@
-const program = require('commander');
+import program from 'commander';
 
 export default (argv) => {
   program
-    .version('0.1.0')
+    .version('0.1.1')
     .description('Compares two configuration files and shows a difference.')
     .arguments('<firstConfig> <secondConfig>')
     .option('-f, --format [json]', 'Output format')
@@ -13,6 +13,8 @@ export default (argv) => {
 
   const pathToFile1 = argv[length - 2];
   const pathToFile2 = argv[length - 1];
+
+  program.format = program.format || 'json';
 
   return { program, pathToFile1, pathToFile2 };
 };

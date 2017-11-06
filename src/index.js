@@ -1,7 +1,8 @@
+import fs from 'fs';
+import os from 'os';
+
 import getParams from './params';
 
-const fs = require('fs');
-const os = require('os');
 
 const { argv } = process;
 

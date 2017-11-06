@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import { launch, gendiff } from '../';
+import { launch } from '../';
 
-if (!module.parent) console.log(launch());
-
-export default gendiff;
+console.log(launch());
