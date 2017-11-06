@@ -6,7 +6,7 @@ export default (argv) => {
     .description('Compares two configuration files and shows a difference.')
     .arguments('<firstConfig> <secondConfig>')
     .option('-f, --format [type]', 'Output format')
-    .parse();
+    .parse(argv);
 
   const { length } = argv;
   if (!length) program.help();
