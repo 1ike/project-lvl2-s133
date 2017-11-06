@@ -16,5 +16,8 @@ lint:
 fix:
 	npm run eslint --fix src
 
+test:
+	npm run test
+
 publish:
 	npm publish
