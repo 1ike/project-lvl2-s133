@@ -1,6 +1,6 @@
 {
   "name": "project-lvl1-s133",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "main": "",
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
@@ -28,5 +28,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "Generate config files differences"
+  "description": "Compares two configuration files and shows a difference."
 }
