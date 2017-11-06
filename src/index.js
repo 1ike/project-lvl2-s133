@@ -1,6 +1,7 @@
 import getParams from './params';
 
-const { program: options, pathToFile1, pathToFile2 } = getParams();
+const argv = process.argv;
+const { program: options, pathToFile1, pathToFile2 } = getParams(argv);
 
 console.log(options.format);
 console.log(pathToFile1);
