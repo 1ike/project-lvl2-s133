@@ -1,6 +1,4 @@
 install:
-#	touch .npmignore
-#	echo "node_modules\ndist\n*.log" > .gitignore
 	npm i
 
 start:
