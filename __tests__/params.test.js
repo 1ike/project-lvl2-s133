@@ -17,3 +17,13 @@ test('params', () => {
   expect(pathToFile2).toBe('bla-bla-bla');
 
 });
+
+/*describe('gendiff()', function() {
+  it('adds two numbers', function() {
+    expect(1).toBe(1);
+  });
+
+  it('doesnt add the third number', function() {
+
+  });
+});*/

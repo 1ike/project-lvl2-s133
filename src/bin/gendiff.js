@@ -2,6 +2,6 @@
 
 import { launch, gendiff } from '../';
 
-launch();
+if (!module.parent) console.log(launch());
 
 export default gendiff;
