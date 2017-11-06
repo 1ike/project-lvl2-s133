@@ -1,4 +1,15 @@
-import options from './options';
+import getParams from './params';
+
+const { program: options, pathToFile1, pathToFile2 } = getParams();
+
+console.log(options.format);
+console.log(pathToFile1);
+console.log(pathToFile2);
+const gendiff = (pathToFile1, pathToFile2) => {
 
 
-export default () => options();
+};
+
+
+export const launch = () => 'поехали';
+export { gendiff };

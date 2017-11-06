@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
-import launch from '../index';
+import { launch, gendiff } from '../';
 
 launch();
+
+export default gendiff;

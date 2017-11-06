@@ -2,7 +2,7 @@ install:
 	npm i
 
 start:
-	npm run babel-node -- src/bin/gendiff.js -V
+	npm run babel-node -- src/bin/gendiff.js
 
 build: lint
 	npm run build
