@@ -7,4 +7,4 @@ const { argv } = process;
 
 const { pathToFile1, pathToFile2, fileFormat } = getParams(argv);
 
-gendiff(pathToFile1, pathToFile2, fileFormat);
+console.log(gendiff(pathToFile1, pathToFile2, fileFormat));

@@ -10,4 +10,14 @@ const parsers = {
 
 const formats = Object.keys(parsers);
 
-export { parsers, formats };
+export default (format) => {
+  const iter = (current, ...rest) => {
+    if (current === format) {
+      return parsers[format];
+    }
+
+    return iter(...rest);
+  };
+
+  return iter(...formats);
+};
