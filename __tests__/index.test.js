@@ -20,21 +20,13 @@ test('gendiff json', () => {
 test('gendiff yml', () => {
   const pathToFile1 = dir + '/before.yml';
   const pathToFile2 = dir + '/after.yml';
-  const fileFormat = 'yaml';
+  const fileFormatFull = 'yaml';
+  const fileFormatShort = 'yaml';
 
   const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
-  const current = gendiff(pathToFile1, pathToFile2, fileFormat);
+  const currentFull = gendiff(pathToFile1, pathToFile2, fileFormatFull);
+  const currentShort = gendiff(pathToFile1, pathToFile2, fileFormatShort);
 
-  expect(current).toBe(expected);
-});
-
-test('gendiff yml', () => {
-  const pathToFile1 = dir + '/before.yml';
-  const pathToFile2 = dir + '/after.yml';
-  const fileFormat = 'yml';
-
-  const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
-  const current = gendiff(pathToFile1, pathToFile2, fileFormat);
-
-  expect(current).toBe(expected);
+  expect(currentFull).toBe(expected);
+  expect(currentShort).toBe(expected);
 });
