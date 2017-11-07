@@ -30,3 +30,15 @@ test('gendiff yml', () => {
   expect(currentFull).toBe(expected);
   expect(currentShort).toBe(expected);
 });
+
+
+test('gendiff ini', () => {
+  const pathToFile1 = dir + '/before.ini';
+  const pathToFile2 = dir + '/after.ini';
+  const fileFormat = 'ini';
+
+  const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
+  const current = gendiff(pathToFile1, pathToFile2, fileFormat);
+
+  expect(current).toBe(expected);
+});

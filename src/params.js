@@ -3,7 +3,7 @@ import { formats } from './formats';
 
 export default (argv) => {
   program
-    .version('0.1.1')
+    .version('0.3.0')
     .description('Compares two configuration files and shows a difference.')
     .arguments('<firstConfig> <secondConfig>')
     .option('-f, --format [json]', 'Output format')
