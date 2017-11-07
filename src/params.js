@@ -1,4 +1,5 @@
 import program from 'commander';
+import { formats } from './formats';
 
 export default (argv) => {
   program
@@ -8,13 +9,16 @@ export default (argv) => {
     .option('-f, --format [json]', 'Output format')
     .parse(argv);
 
-  const { length } = argv;
-  if (length === 2) program.help();
+  if (!program.args.length) program.help();
 
-  const pathToFile1 = argv[length - 2];
-  const pathToFile2 = argv[length - 1];
+  const pathToFile1 = program.args[0];
+  const pathToFile2 = program.args[1];
 
-  program.format = program.format || 'json';
+  const fileFormat = program.format ? program.format.toLowerCase() : 'json';
 
-  return { program, pathToFile1, pathToFile2 };
+  if (formats.indexOf(fileFormat) < 0) {
+    throw new Error(`Format "${fileFormat}" is not supported.`);
+  }
+
+  return { pathToFile1, pathToFile2, fileFormat };
 };

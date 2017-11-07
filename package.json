@@ -1,12 +1,14 @@
 {
   "name": "project-lvl1-s133",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "dist/index.js",
   "bin": {
     "gendiff": "dist/bin/gendiff.js"
   },
   "dependencies": {
-    "commander": "^2.11.0"
+    "commander": "^2.11.0",
+    "js-yaml": "^3.10.0",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "babel-cli": "*",
@@ -37,7 +39,10 @@
     "test": "jest"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/__tests__/__fixtures__/"
+    ]
   },
   "keywords": [],
   "author": "",

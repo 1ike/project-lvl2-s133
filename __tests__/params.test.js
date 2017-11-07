@@ -6,13 +6,13 @@ test('params', () => {
     'node',
     'C:\\TEMP\\Programming\\hexlet\\js2\\src\\bin\\gendiff.js',
     '-f',
-    'yml',
+    'YML',
     'la-la-la',
     'bla-bla-bla'
   ];
-  const { program: options, pathToFile1, pathToFile2 } = getParams(argv);
+  const { fileFormat, pathToFile1, pathToFile2 } = getParams(argv);
 
-  expect(options.format).toBe('yml');
+  expect(fileFormat).toBe('yml');
   expect(pathToFile1).toBe('la-la-la');
   expect(pathToFile2).toBe('bla-bla-bla');
 
