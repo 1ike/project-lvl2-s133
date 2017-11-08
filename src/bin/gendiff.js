@@ -3,8 +3,7 @@
 import gendiff from '../';
 import getParams from '../params';
 
-const { argv } = process;
 
-const { pathToFile1, pathToFile2, fileFormat } = getParams(argv);
+const { pathToFile1, pathToFile2, fileFormat } = getParams(process.argv);
 
 console.log(gendiff(pathToFile1, pathToFile2, fileFormat));

@@ -8,16 +8,4 @@ const parsers = {
   ini: ini.decode,
 };
 
-const formats = Object.keys(parsers);
-
-export default (format) => {
-  const iter = (current, ...rest) => {
-    if (current === format) {
-      return parsers[format];
-    }
-
-    return iter(...rest);
-  };
-
-  return iter(...formats);
-};
+export default format => parsers[format];
