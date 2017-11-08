@@ -37,12 +37,17 @@
     "prepublishOnly": "npm run build",
     "eslint:init": "eslint --init",
     "eslint": "eslint",
-    "test": "jest"
+    "test": "jest",
+    "test-watch": "jest --watchAll"
   },
   "jest": {
     "testEnvironment": "node",
     "modulePathIgnorePatterns": [
       "<rootDir>/__tests__/__fixtures__/"
+    ],
+    "watchPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/"
     ]
   },
   "keywords": [],

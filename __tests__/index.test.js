@@ -21,7 +21,7 @@ test('gendiff yml', () => {
   const pathToFile1 = dir + '/before.yml';
   const pathToFile2 = dir + '/after.yml';
   const fileFormatFull = 'yaml';
-  const fileFormatShort = 'yaml';
+  const fileFormatShort = 'yml';
 
   const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
   const currentFull = gendiff(pathToFile1, pathToFile2, fileFormatFull);

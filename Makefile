@@ -19,5 +19,8 @@ fix:
 test:
 	npm run test
 
+t:
+	npm run test-watch
+
 publish:
 	npm publish
