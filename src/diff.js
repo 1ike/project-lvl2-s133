@@ -3,23 +3,27 @@ import _ from 'lodash';
 
 const tab = '    ';
 
+const getKeys = (ast1, ast2) => {
+  const newAST1 = typeof ast1 === 'object' ? ast1 : {};
+  const newAST2 = typeof ast1 === 'object' ? ast2 : {};
+  return _.union(Object.keys(ast1), Object.keys(ast2));
+}
 
 const flattenDiffKeys = (ast1, ast2, path) => {
 
-  const keys = _.union(Object.keys(ast1), Object.keys(ast2));
+  const keys = getKeys(ast1, ast2);
 
   const diff = keys.reduce((acc, item) => {
     const isEndAST1 = typeof ast1[item] === 'object';
     const isEndAST2 = typeof ast2[item] === 'object';
 
-    const newAST1 = isEndAST1 ? {} : newAST1;
-    const newAST2 = isEndAST2 ? {} : newAST2;
-
-    return isEndAST1 && isEndAST2 ? acc.concat(item) : acc.concat(item);
+    return isEndAST1 && isEndAST2 ? acc.concat(item) : acc.concat(ast1, ast2, path.concat(item));
   }, []);
 
   return diff
 }
+
+
 
 const getDiff = (ast1, ast2, level, isFromLastVersion = true) => {
 /*
