@@ -4,12 +4,6 @@ import _ from 'lodash';
 const tab = '    ';
 
 
-const hasChildrenInBothAST = (ast1, ast2, key) => {
-  const res = typeof ast1[key] === 'object'
-           && typeof ast2[key] === 'object';
-  return res;
-}
-
 const isActual = (ast1, ast2, key) => {
   const hasChildrenInBothAST = typeof ast1[key] === 'object'
                             && typeof ast2[key] === 'object';
@@ -19,31 +13,38 @@ const isActual = (ast1, ast2, key) => {
 const getStatus = (ast1, ast2, key) => {
   if (isActual(ast1, ast2, key)) return 'actual';
 
-  if (ast2[key]) return 'changed';
+  if (ast1[key] && ast2[key]) return 'changed';
+
+  if (ast2[key]) return 'added';
 
   return 'deleted';
 };
 
-const hasNotObject = (ast1, ast2) => typeof ast1 === 'object'
-                                || typeof ast2 === 'object';
+const getNewAST = (ast1, ast2) => {
+  const newAST1 = typeof ast1 === 'object' ? ast1 : {};
+  const newAST2 = typeof ast2 === 'object' ? ast2 : {};
+
+  return { newAST1, newAST2 };
+};
+
+const isEnd = (ast1, ast2) => typeof ast1 !== 'object'
+                           && typeof ast2 !== 'object';
 
 
-const merge = (ast1, ast2, level = 0) => {
-  if (hasNotObject()) return '';
+const merge = (ast1, ast2, status = 'actual', level = 0) => {
+  if (isEnd(ast1, ast2)) return '';
 
-  const keys = _.union(Object.keys(ast1), Object.keys(ast2));
-
+  const { newAST1, newAST2 } = getNewAST(ast1, ast2);
+  const keys = _.union(Object.keys(newAST1), Object.keys(newAST2));
 
   const ast = keys.map((key) => {
-    const status = getStatus(ast1, ast2, key);
+    const newStatus = getStatus(newAST1, newAST2, key, status);
 
     const newLevel = level + 1;
 
-    const newAST1 = typeof ast1[key] === 'object' ? ast1[key] : {};
-    const newAST2 = typeof ast2[key] === 'object' ? ast2[key] : {};
-    const value = merge(newAST1, newAST2, newLevel);
+    const value = merge(newAST1[key], newAST2[key], newStatus, newLevel);
 
-    return { key, value, level, status };
+    return { key, value, status: newStatus, level };
   }, []);
 
   return ast;
