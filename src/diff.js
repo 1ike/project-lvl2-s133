@@ -3,7 +3,26 @@ import _ from 'lodash';
 
 const tab = '    ';
 
+
+const flattenDiffKeys = (ast1, ast2, path) => {
+
+  const keys = _.union(Object.keys(ast1), Object.keys(ast2));
+
+  const diff = keys.reduce((acc, item) => {
+    const isEndAST1 = typeof ast1[item] === 'object';
+    const isEndAST2 = typeof ast2[item] === 'object';
+
+    const newAST1 = isEndAST1 ? {} : newAST1;
+    const newAST2 = isEndAST2 ? {} : newAST2;
+
+    return isEndAST1 && isEndAST2 ? acc.concat(item) : acc.concat(item);
+  }, []);
+
+  return diff
+}
+
 const getDiff = (ast1, ast2, level, isFromLastVersion = true) => {
+/*
   if (typeof ast1 !== 'object') return ast1;
   if (typeof ast2 !== 'object') return ast2;
 
@@ -30,6 +49,7 @@ const getDiff = (ast1, ast2, level, isFromLastVersion = true) => {
 
     return acc.concat(oldLine);
   }, []);
+*/
 
   const margin = tab.repeat(level);
   const marginBig = `  ${tab.repeat(level)}`;
