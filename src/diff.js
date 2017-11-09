@@ -28,7 +28,6 @@ const getCurrentStatus = (ast1, ast2, key) => {
 
   if (ast2[key]) return 'added';
 
-
   return 'deleted';
 };
 
@@ -38,8 +37,6 @@ const getStatus = (ast1, ast2, key, status) => {
 
   return mustBeActual ? 'actual' : currentStatus;
 };
-
-
 
 
 const merge = (ast1, ast2, status = 'actual', level = 0) => {
@@ -62,44 +59,40 @@ const merge = (ast1, ast2, status = 'actual', level = 0) => {
 };
 
 
-const getDiff = (ast1, ast2, level, isFromLastVersion = true) => {
+const toString = (ast, level = 0) => {
+  if (Array.isArray(ast)) return ast;
 
-  const diffKeys = merge(ast1, ast2);
+  const levelDiff = ast.reduce((acc, item) => {
+    const {
+      key,
+      value,
+      status,
+      level: lvl,
+    } = item;
+    const isValueArray = Array.isArray(value);
+    const result = isValueArray ? toString(value, lvl) : value;
 
-/*
-  if (typeof ast1 !== 'object') return ast1;
-  if (typeof ast2 !== 'object') return ast2;
-
-  const newLevel = level + 1;
-  const keys = _.union(Object.keys(ast1), Object.keys(ast2));
-
-  const diff = keys.reduce((acc, item) => {
-    const line = `  ${item}: `;
-    const plusLine = `${isFromLastVersion ? '+' : ' '} ${item}: `;
-    const minusline = `${isFromLastVersion ? '-' : ' '} ${item}: `;
-
-    const hasChildrenInBothAST = typeof ast1[item] === 'object' && item in ast1 && item in ast2;
-    if (ast2[item] === ast1[item] || hasChildrenInBothAST) {
-      return acc.concat(line + getDiff(ast1[item], ast2[item], newLevel, isFromLastVersion));
+    const line = `+ ${key}:  ${result}`;
+    const newLine = `+ ${key}:  ${result}`;
+    const oldLine = `- ${key}:  ${result}`;
+    if (status === 'changed') {
+      return acc.concat(newLine, oldLine);
+    }
+    if (status === 'added') {
+      return acc.concat(newLine);
+    }
+    if (status === 'deleted') {
+      return acc.concat(oldLine);
     }
 
-    const newLine = plusLine + getDiff({}, ast2[item], newLevel, false);
-    const oldLine = minusline + getDiff(ast1[item], {}, newLevel, false);
-
-    if (ast2[item]) {
-      const newAcc = acc.concat(newLine);
-      return ast1[item] ? newAcc.concat(oldLine) : newAcc;
-    }
-
-    return acc.concat(oldLine);
+    return acc.concat(line);
   }, []);
-*/
 
   const margin = tab.repeat(level);
   const marginBig = `  ${tab.repeat(level)}`;
-  const result = diff.join(`${os.EOL}${marginBig}`);
+  const result = levelDiff.join(`${os.EOL}${marginBig}`);
 
   return `{${os.EOL}${marginBig}${result}${os.EOL}${margin}}`;
 };
 
-export default (ast1, ast2) => getDiff(ast1, ast2, 0);
+export default (ast1, ast2) => toString(merge(ast1, ast2));
