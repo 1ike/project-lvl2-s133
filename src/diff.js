@@ -2,6 +2,9 @@ import os from 'os';
 import _ from 'lodash';
 
 const tab = '    ';
+const prefixActual = '  ';
+const prefixPlus = '+ ';
+const prefixMinus = '- ';
 
 
 const isActual = (ast1, ast2, key) => {
@@ -38,21 +41,33 @@ const getStatus = (ast1, ast2, key, status) => {
   return mustBeActual ? 'actual' : currentStatus;
 };
 
+const getPrefix = (status) => {
+  if (status === 'actual') return prefixActual;
+  if (status === 'deleted') return prefixMinus;
 
-const merge = (ast1, ast2, status = 'actual', level = 0) => {
-  if (isEnd(ast1, ast2)) return '';
+  return prefixPlus;
+};
+
+
+const merge = (ast1, ast2, status = 'actual') => {
+  if (isEnd(ast1, ast2)) return ast1 || ast2;
 
   const { newAST1, newAST2 } = getNewAST(ast1, ast2);
   const keys = _.union(Object.keys(newAST1), Object.keys(newAST2));
 
-  const ast = keys.map((key) => {
+  const ast = keys.reduce((acc, key) => {
     const newStatus = getStatus(newAST1, newAST2, key, status);
+    const prefix = getPrefix(newStatus);
 
-    const newLevel = level + 1;
+    if (newStatus === 'changed') {
+      const value1 = { key, value: newAST1[key], prefix };
+      const value2 = { key, value: newAST2[key], prefix };
+      return acc.concat(value1, value2);
+    }
 
-    const value = merge(newAST1[key], newAST2[key], newStatus, newLevel);
+    const value = merge(newAST1[key], newAST2[key], newStatus);
 
-    return { key, value, status: newStatus, level };
+    return acc.concat({ key, value, prefix });
   }, []);
 
   return ast;
@@ -60,30 +75,12 @@ const merge = (ast1, ast2, status = 'actual', level = 0) => {
 
 
 const toString = (ast, level = 0) => {
-  if (Array.isArray(ast)) return ast;
+  if (!Array.isArray(ast)) return ast;
 
   const levelDiff = ast.reduce((acc, item) => {
-    const {
-      key,
-      value,
-      status,
-      level: lvl,
-    } = item;
-    const isValueArray = Array.isArray(value);
-    const result = isValueArray ? toString(value, lvl) : value;
+    const { prefix, key, value } = item;
 
-    const line = `+ ${key}:  ${result}`;
-    const newLine = `+ ${key}:  ${result}`;
-    const oldLine = `- ${key}:  ${result}`;
-    if (status === 'changed') {
-      return acc.concat(newLine, oldLine);
-    }
-    if (status === 'added') {
-      return acc.concat(newLine);
-    }
-    if (status === 'deleted') {
-      return acc.concat(oldLine);
-    }
+    const line = `${prefix}${key}:  ${toString(value)}`;
 
     return acc.concat(line);
   }, []);
@@ -95,4 +92,10 @@ const toString = (ast, level = 0) => {
   return `{${os.EOL}${marginBig}${result}${os.EOL}${margin}}`;
 };
 
-export default (ast1, ast2) => toString(merge(ast1, ast2));
+const getDiff = (ast1, ast2) => {
+  const ast = merge(ast1, ast2);
+
+  return toString(ast);
+};
+
+export default getDiff;
