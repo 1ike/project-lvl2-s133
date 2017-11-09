@@ -31,20 +31,15 @@ const merge = (ast1, ast2, level = 0) => {
 
   const keys = _.union(Object.keys(ast1), Object.keys(ast2));
 
-  const getValue = (key) => {
-    const newLevel = level + 1;
-
-    const newAST1 = typeof ast1[key] === 'object' ? ast1[key] : {};
-    const newAST2 = typeof ast2[key] === 'object' ? ast2[key] : {};
-
-    return merge(newAST1, newAST2, newLevel);
-  };
-
 
   const ast = keys.map((key) => {
     const status = getStatus(ast1, ast2, key);
 
-    const value = getValue(key);
+    const newLevel = level + 1;
+
+    const newAST1 = typeof ast1[key] === 'object' ? ast1[key] : {};
+    const newAST2 = typeof ast2[key] === 'object' ? ast2[key] : {};
+    const value = merge(newAST1, newAST2, newLevel);
 
     return { key, value, level, status };
   }, []);
