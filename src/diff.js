@@ -24,10 +24,12 @@ const getStatus = (ast1, ast2, key) => {
   return 'deleted';
 };
 
-const merge = (ast1, ast2, level = 0) => {
-  if (typeof ast1 !== 'object') return ast1;
-  if (typeof ast2 !== 'object') return ast2;
+const hasNotObject = (ast1, ast2) => typeof ast1 === 'object'
+                                || typeof ast2 === 'object';
 
+
+const merge = (ast1, ast2, level = 0) => {
+  if (hasNotObject()) return '';
 
   const keys = _.union(Object.keys(ast1), Object.keys(ast2));
 
