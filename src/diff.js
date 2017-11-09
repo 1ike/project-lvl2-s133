@@ -22,12 +22,10 @@ const getDiff = (ast1, ast2, level, isFromLastVersion = true) => {
 
     const newLine = plusLine + getDiff({}, ast2[item], newLevel, false);
     const oldLine = minusline + getDiff(ast1[item], {}, newLevel, false);
-    if (ast1[item] && ast2[item]) {
-      return acc.concat(newLine, oldLine);
-    }
 
     if (ast2[item]) {
-      return acc.concat(newLine);
+      const newAcc = acc.concat(newLine);
+      return ast1[item] ? newAcc.concat(oldLine) : newAcc;
     }
 
     return acc.concat(oldLine);
