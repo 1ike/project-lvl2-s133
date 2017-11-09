@@ -17,7 +17,9 @@ const flattenDiffKeys = (ast1, ast2, path) => {
     const isEndAST1 = typeof ast1[item] === 'object';
     const isEndAST2 = typeof ast2[item] === 'object';
 
-    return isEndAST1 && isEndAST2 ? acc.concat(item) : acc.concat(ast1, ast2, path.concat(item));
+    return isEndAST1 && isEndAST2 ?
+      acc.concat(item) :
+      acc.concat(flattenDiffKeys(ast1, ast2, path.concat(item)));
   }, []);
 
   return diff
@@ -26,6 +28,9 @@ const flattenDiffKeys = (ast1, ast2, path) => {
 
 
 const getDiff = (ast1, ast2, level, isFromLastVersion = true) => {
+
+
+
 /*
   if (typeof ast1 !== 'object') return ast1;
   if (typeof ast2 !== 'object') return ast2;
