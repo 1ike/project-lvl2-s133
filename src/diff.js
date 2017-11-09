@@ -3,33 +3,62 @@ import _ from 'lodash';
 
 const tab = '    ';
 
-const getKeys = (ast1, ast2) => {
-  const newAST1 = typeof ast1 === 'object' ? ast1 : {};
-  const newAST2 = typeof ast1 === 'object' ? ast2 : {};
-  return _.union(Object.keys(ast1), Object.keys(ast2));
+
+const hasChildrenInBothAST = (ast1, ast2, key) => {
+  const res = typeof ast1[key] === 'object'
+           && typeof ast2[key] === 'object';
+  return res;
 }
 
-const flattenDiffKeys = (ast1, ast2, path) => {
+const isActual = (ast1, ast2, key) => {
+  const hasChildrenInBothAST = typeof ast1[key] === 'object'
+                            && typeof ast2[key] === 'object';
+  return ast2[key] === ast1[key] || hasChildrenInBothAST;
+};
 
-  const keys = getKeys(ast1, ast2);
+const getStatus = (ast1, ast2, key) => {
+  if (isActual(ast1, ast2, key)) return 'actual';
 
-  const diff = keys.reduce((acc, item) => {
-    const isEndAST1 = typeof ast1[item] === 'object';
-    const isEndAST2 = typeof ast2[item] === 'object';
+  if (ast2[key]) return 'changed';
 
-    return isEndAST1 && isEndAST2 ?
-      acc.concat(item) :
-      acc.concat(flattenDiffKeys(ast1, ast2, path.concat(item)));
+  return 'deleted';
+};
+
+const merge = (ast1, ast2, level = 0) => {
+  if (typeof ast1 !== 'object') return ast1;
+  if (typeof ast2 !== 'object') return ast2;
+
+
+  const keys = _.union(Object.keys(ast1), Object.keys(ast2));
+
+  const getValue = (key) => {
+    const newLevel = level + 1;
+    if (hasChildrenInBothAST(ast1, ast2, key)) {
+      return merge(ast1[key], ast2[key], newLevel);
+    }
+    if (typeof ast1[key] === 'object') {
+      return merge(ast1[key], {}, newLevel);
+    }
+
+    return merge({}, ast2[key], newLevel);
+  };
+
+
+  const ast = keys.map((key) => {
+    const status = getStatus(ast1, ast2, key);
+
+    const value = getValue(key);
+
+    return { key, value, level, status };
   }, []);
 
-  return diff
-}
-
+  return ast;
+};
 
 
 const getDiff = (ast1, ast2, level, isFromLastVersion = true) => {
 
-
+  const diffKeys = merge(ast1, ast2);
 
 /*
   if (typeof ast1 !== 'object') return ast1;
