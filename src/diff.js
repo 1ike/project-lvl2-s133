@@ -10,15 +10,8 @@ const isActual = (ast1, ast2, key) => {
   return ast2[key] === ast1[key] || hasChildrenInBothAST;
 };
 
-const getStatus = (ast1, ast2, key) => {
-  if (isActual(ast1, ast2, key)) return 'actual';
-
-  if (ast1[key] && ast2[key]) return 'changed';
-
-  if (ast2[key]) return 'added';
-
-  return 'deleted';
-};
+const isEnd = (ast1, ast2) => typeof ast1 !== 'object'
+                           && typeof ast2 !== 'object';
 
 const getNewAST = (ast1, ast2) => {
   const newAST1 = typeof ast1 === 'object' ? ast1 : {};
@@ -27,8 +20,26 @@ const getNewAST = (ast1, ast2) => {
   return { newAST1, newAST2 };
 };
 
-const isEnd = (ast1, ast2) => typeof ast1 !== 'object'
-                           && typeof ast2 !== 'object';
+
+const getCurrentStatus = (ast1, ast2, key) => {
+  if (isActual(ast1, ast2, key)) return 'actual';
+
+  if (ast1[key] && ast2[key]) return 'changed';
+
+  if (ast2[key]) return 'added';
+
+
+  return 'deleted';
+};
+
+const getStatus = (ast1, ast2, key, status) => {
+  const currentStatus = getCurrentStatus(ast1, ast2, key);
+  const mustBeActual = status === 'added' || status === 'deleted';
+
+  return mustBeActual ? 'actual' : currentStatus;
+};
+
+
 
 
 const merge = (ast1, ast2, status = 'actual', level = 0) => {
