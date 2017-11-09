@@ -33,16 +33,11 @@ const merge = (ast1, ast2, level = 0) => {
 
   const getValue = (key) => {
     const newLevel = level + 1;
-    let res;
-    if (hasChildrenInBothAST(ast1, ast2, key)) {
-      res = merge(ast1[key], ast2[key], newLevel);
-    } else if (typeof ast1[key] === 'object') {
-      res = merge(ast1[key], {}, newLevel);
-    } else {
-      res = merge({}, ast2[key], newLevel);
-    }
 
-    return res;
+    const newAST1 = typeof ast1[key] === 'object' ? ast1[key] : {};
+    const newAST2 = typeof ast2[key] === 'object' ? ast2[key] : {};
+
+    return merge(newAST1, newAST2, newLevel);
   };
 
 
