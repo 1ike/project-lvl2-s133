@@ -10,7 +10,9 @@ program
   .option('-f, --format [json]', 'Output format')
   .arguments('<firstConfig> <secondConfig>')
   .action((firstConfig, secondConfig) => {
-    console.log(gendiff(firstConfig, secondConfig, program.format));
+    const inputFormat = firstConfig.split('.').pop();
+
+    console.log(gendiff(firstConfig, secondConfig, inputFormat, program.format));
   })
   .parse(process.argv);
 
