@@ -1,7 +1,14 @@
 import fs from 'fs';
 
 import parsers from './parsers';
-import getDiff from './diff';
+import getAST from './ast';
+import toJSONString from './json';
+import toPlainString from './plain';
+
+const transformersToString = {
+  json: toJSONString,
+  plain: toPlainString,
+};
 
 const gendiff = (pathToFile1, pathToFile2, inputFormat, outputFormat = 'json') => {
   const file1 = fs.readFileSync(pathToFile1, 'utf8');
@@ -9,10 +16,15 @@ const gendiff = (pathToFile1, pathToFile2, inputFormat, outputFormat = 'json') =
 
   const pars = parsers[inputFormat];
 
-  const ast1 = pars(file1);
-  const ast2 = pars(file2);
+  const tree1 = pars(file1);
+  const tree2 = pars(file2);
 
-  return getDiff(ast1, ast2, outputFormat);
+  const ast = getAST(tree1, tree2);
+
+  const toString = transformersToString[outputFormat];
+
+
+  return toString(ast);
 };
 
 export default gendiff;

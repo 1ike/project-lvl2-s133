@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import path from 'path';
 import program from 'commander';
 
 import gendiff from '../';
@@ -10,7 +11,7 @@ program
   .option('-f, --format [json]', 'Output format')
   .arguments('<firstConfig> <secondConfig>')
   .action((firstConfig, secondConfig) => {
-    const inputFormat = firstConfig.split('.').pop();
+    const inputFormat = path.extname(firstConfig).slice(1);
 
     console.log(gendiff(firstConfig, secondConfig, inputFormat, program.format));
   })
