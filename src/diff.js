@@ -60,8 +60,8 @@ const merge = (ast1, ast2, status = 'actual') => {
     const prefix = getPrefix(newStatus);
 
     if (newStatus === 'changed') {
-      const value1 = { key, value: newAST1[key], prefix };
-      const value2 = { key, value: newAST2[key], prefix };
+      const value1 = { key, value: newAST2[key], prefix };
+      const value2 = { key, value: newAST1[key], prefix: prefixMinus };
       return acc.concat(value1, value2);
     }
 
@@ -80,7 +80,7 @@ const toString = (ast, level = 0) => {
   const levelDiff = ast.reduce((acc, item) => {
     const { prefix, key, value } = item;
 
-    const line = `${prefix}${key}:  ${toString(value)}`;
+    const line = `${prefix}${key}: ${toString(value, level + 1)}`;
 
     return acc.concat(line);
   }, []);
