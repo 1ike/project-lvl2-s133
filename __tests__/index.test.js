@@ -4,14 +4,13 @@ import os from 'os';
 import gendiff from '../src';
 
 const dir = __dirname + '/__fixtures__';
-
+const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
 
 test('gendiff json', () => {
   const pathToFile1 = dir + '/before.json';
   const pathToFile2 = dir + '/after.json';
   const inputFormat = 'json';
 
-  const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
   const current = gendiff(pathToFile1, pathToFile2, inputFormat);
 
   expect(current).toBe(expected);
@@ -24,7 +23,6 @@ test('gendiff yml', () => {
   const inputFormatFull = 'yaml';
   const inputFormatShort = 'yml';
 
-  const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
   const currentFull = gendiff(pathToFile1, pathToFile2, inputFormatFull);
   const currentShort = gendiff(pathToFile1, pathToFile2, inputFormatShort);
 
@@ -38,7 +36,6 @@ test('gendiff ini', () => {
   const pathToFile2 = dir + '/after.ini';
   const inputFormat = 'ini';
 
-  const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
   const current = gendiff(pathToFile1, pathToFile2, inputFormat);
 
   expect(current).toBe(expected);
