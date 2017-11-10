@@ -4,30 +4,28 @@ import os from 'os';
 import gendiff from '../src';
 
 const dir = __dirname + '/__fixtures__';
-const prefixBefore = dir + '/before.';
-const prefixAfter = dir + '/after.';
 
-const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
 
 test('gendiff json', () => {
-  const inputFormat = 'json';
-  const pathToFile1 = prefixBefore + inputFormat;
-  const pathToFile2 = prefixAfter + inputFormat;
+  const pathToFile1 = dir + '/before.json';
+  const pathToFile2 = dir + '/after.json';
 
-  const current = gendiff(pathToFile1, pathToFile2, inputFormat);
+  const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
+  const current = gendiff(pathToFile1, pathToFile2, 'json');
 
   expect(current).toBe(expected);
 });
 
 
 test('gendiff yml', () => {
-  const inputFormatFull = 'yaml';
-  const inputFormatShort = 'yml';
-  const pathToFile1 = prefixBefore + inputFormatShort;
-  const pathToFile2 = prefixAfter + inputFormatShort;
+  const pathToFile1 = dir + '/before.yml';
+  const pathToFile2 = dir + '/after.yml';
+  const fileFormatFull = 'yaml';
+  const fileFormatShort = 'yml';
 
-  const currentFull = gendiff(pathToFile1, pathToFile2, inputFormatFull);
-  const currentShort = gendiff(pathToFile1, pathToFile2, inputFormatShort);
+  const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
+  const currentFull = gendiff(pathToFile1, pathToFile2, fileFormatFull);
+  const currentShort = gendiff(pathToFile1, pathToFile2, fileFormatShort);
 
   expect(currentFull).toBe(expected);
   expect(currentShort).toBe(expected);
@@ -35,11 +33,12 @@ test('gendiff yml', () => {
 
 
 test('gendiff ini', () => {
-  const inputFormat = 'ini';
-  const pathToFile1 = prefixBefore + inputFormat;
-  const pathToFile2 = prefixAfter + inputFormat;
+  const pathToFile1 = dir + '/before.ini';
+  const pathToFile2 = dir + '/after.ini';
+  const fileFormat = 'ini';
 
-  const current = gendiff(pathToFile1, pathToFile2, inputFormat);
+  const expected = fs.readFileSync(dir + '/expected.txt', 'utf8');
+  const current = gendiff(pathToFile1, pathToFile2, fileFormat);
 
   expect(current).toBe(expected);
 });
