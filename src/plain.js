@@ -3,6 +3,11 @@ import os from 'os';
 import getStatus from './libs';
 
 
+
+const flatten = (ast, path = []) => {
+  if (!Array.isArray(ast)) return [];
+
+  const levelDiff = ast.reduce((acc, item) => {
 const isActualLeaf = (status, hasChildren) => status === 'actual' && !hasChildren;
 
 const getNewItemNode = (status, hasChildren, newItem) => {
@@ -10,10 +15,10 @@ const getNewItemNode = (status, hasChildren, newItem) => {
   return isNotActual ? newItem : [];
 };
 
-const flatten = (ast, path = []) => {
-  if (!Array.isArray(ast)) return [];
-
-  const levelDiff = ast.reduce((acc, item) => {
+const getResultItem = (hasChildren, newItem, newItemNode) => {
+  const res = hasChildren ? newItemNode : newItem;
+  return res;
+}
     const { key, value, type } = item;
 
     const hasChildren = Array.isArray(value);
@@ -27,7 +32,10 @@ const flatten = (ast, path = []) => {
 
     const newItemNode = getNewItemNode(status, hasChildren, newItem);
 
-    return acc.concat(hasChildren ? newItemNode : newItem, flatten(value, path.concat(key)));
+    const resultItem = getResultItem(hasChildren, newItem, newItemNode);
+
+
+    return acc.concat(resultItem, flatten(value, path.concat(key)));
   }, []);
 
   return levelDiff;

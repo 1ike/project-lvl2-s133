@@ -1,16 +1,12 @@
 import os from 'os';
 
+import getStatus from './libs';
+
 const tab = '    ';
 const prefixActual = '  ';
 const prefixPlus = '+ ';
 const prefixMinus = '- ';
 
-
-const getStatus = (type) => {
-  const status = type.slice(-1)[0];
-  const wasSingle = type.slice(0, -1).indexOf(status) < 0;
-  return wasSingle ? status : 'actual';
-};
 
 const getPrefix = (status) => {
   if (status === 'actual') return prefixActual;
