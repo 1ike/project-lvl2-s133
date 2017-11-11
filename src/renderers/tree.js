@@ -1,6 +1,6 @@
 import os from 'os';
 
-import { typeEnums as t } from '../libs';
+import t from '../libs';
 
 const tab = '    ';
 const prefixActual = '  ';
@@ -26,7 +26,6 @@ const render = (ast, level = 0) => {
       oldValue,
       type,
     } = item;
-
 
     if (type === t.actual) {
       if (typeof oldValue !== 'object') {

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { typeEnums as t } from './libs';
+import t from './libs';
 
 
 const genDiff = (tree1, tree2) => {
@@ -17,11 +17,7 @@ const genDiff = (tree1, tree2) => {
       }
 
       if (tree1[key] === tree2[key]) {
-        return acc.concat({
-          type: t.actual,
-          key,
-          oldValue: tree1[key],
-        });
+        return acc.concat({ type: t.actual, key, oldValue: tree1[key] });
       }
 
       return acc.concat({
@@ -33,18 +29,10 @@ const genDiff = (tree1, tree2) => {
     }
 
     if (!tree2[key]) {
-      return acc.concat({
-        type: t.removed,
-        key,
-        oldValue: tree1[key],
-      });
+      return acc.concat({ type: t.removed, key, oldValue: tree1[key] });
     }
 
-    return acc.concat({
-      type: t.added,
-      key,
-      newValue: tree2[key],
-    });
+    return acc.concat({ type: t.added, key, newValue: tree2[key] });
   }, []);
 
   return ast;
