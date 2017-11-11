@@ -3,7 +3,7 @@ import fs from 'fs';
 import yamlParser from 'js-yaml';
 import ini from 'ini';
 
-import getAST from './ast';
+import genDiff from './ast';
 import toTreeString from './tree';
 import toPlainString from './plain';
 
@@ -28,7 +28,7 @@ const gendiff = (pathToFile1, pathToFile2, inputFormat, outputFormat = 'tree') =
   const tree1 = pars(file1);
   const tree2 = pars(file2);
 
-  const ast = getAST(tree1, tree2);
+  const ast = genDiff(tree1, tree2);
 
   const toString = transformersToString[outputFormat];
 
