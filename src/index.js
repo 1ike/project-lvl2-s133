@@ -1,9 +1,18 @@
 import fs from 'fs';
 
-import parsers from './parsers';
+import yamlParser from 'js-yaml';
+import ini from 'ini';
+
 import getAST from './ast';
 import toJSONString from './json';
 import toPlainString from './plain';
+
+const parsers = {
+  json: JSON.parse,
+  yaml: yamlParser.safeLoad,
+  yml: yamlParser.safeLoad,
+  ini: ini.decode,
+};
 
 const transformersToString = {
   json: toJSONString,
