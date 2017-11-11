@@ -1,5 +1,14 @@
 import os from 'os';
 
+import getStatus from './libs';
+
+
+const isActualLeaf = (status, hasChildren) => status === 'actual' && !hasChildren;
+
+const getNewItemNode = (status, hasChildren, newItem) => {
+  const isNotActual = hasChildren && status !== 'actual';
+  return isNotActual ? newItem : [];
+};
 
 const flatten = (ast, path = []) => {
   if (!Array.isArray(ast)) return [];
@@ -8,16 +17,15 @@ const flatten = (ast, path = []) => {
     const { key, value, type } = item;
 
     const hasChildren = Array.isArray(value);
-    const isActualLeaf = type === 'actual' && !hasChildren;
 
-    if (isActualLeaf) return acc;
+    const status = getStatus(type);
 
-    const notActual = hasChildren && type !== 'actual';
+    if (isActualLeaf(status, hasChildren)) return acc;
 
     const newItem = item;
     newItem.path = path;
 
-    const newItemNode = notActual ? newItem : [];
+    const newItemNode = getNewItemNode(status, hasChildren, newItem);
 
     return acc.concat(hasChildren ? newItemNode : newItem, flatten(value, path.concat(key)));
   }, []);
@@ -26,17 +34,10 @@ const flatten = (ast, path = []) => {
 };
 
 
-const getStatus = (type) => {
-  const status = type.slice(-1)[0];
-  const wasSingle = type.slice(0, -1).indexOf(status) < 0;
-  return wasSingle ? status : 'actual';
-};
-
 const prepareValue = (value, status) => {
   const newValue = typeof value === 'string' ? `'${value}'` : value;
   if (status === 'added') {
-    return typeof newValue === 'object' ?
-                'complex value' : `value: ${newValue}`;
+    return typeof newValue === 'object' ? 'complex value' : `value: ${newValue}`;
   }
 
   return typeof value === 'string' ? `'${value}'` : value;
