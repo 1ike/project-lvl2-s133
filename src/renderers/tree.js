@@ -42,19 +42,16 @@ const render = (ast, level = 0) => {
     }
 
     if (type === t.removed) {
-      const value = toString(oldValue, level);
-      return acc.concat(`${prefixMinus}${key}: ${value}`);
+      return acc.concat(`${prefixMinus}${key}: ${toString(oldValue, level)}`);
     }
 
-    const value = toString(newValue, level);
-    return acc.concat(`${prefixPlus}${key}: ${value}`);
+    return acc.concat(`${prefixPlus}${key}: ${toString(newValue, level)}`);
   }, []);
 
   const margin = tab.repeat(level);
-  const marginBig = `  ${tab.repeat(level)}`;
-  const result = levelDiff.join(`${os.EOL}${marginBig}`);
+  const result = levelDiff.join(`${os.EOL}  ${margin}`);
 
-  return `{${os.EOL}${marginBig}${result}${os.EOL}${margin}}`;
+  return `{${os.EOL}  ${margin}${result}${os.EOL}${margin}}`;
 };
 
 export default render;
