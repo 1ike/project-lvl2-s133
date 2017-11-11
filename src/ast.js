@@ -1,5 +1,6 @@
 import _ from 'lodash';
 
+import { typeEnums as t } from './libs';
 
 const isActual = (tree1, tree2, key) => {
   const hasChildrenInBothTrees = typeof tree1[key] === 'object'
@@ -18,37 +19,39 @@ const getNewTree = (tree1, tree2) => {
 };
 
 
-const getStatus = (tree1, tree2, key) => {
-  if (isActual(tree1, tree2, key)) return 'actual';
+const getType = (tree1, tree2, key) => {
+  if (isActual(tree1, tree2, key)) return t.actual;
 
-  if (tree1[key] && tree2[key]) return 'updated';
+  if (tree1[key] && tree2[key]) return t.updated;
 
-  if (tree2[key]) return 'added';
+  if (tree2[key]) return t.added;
 
-  return 'removed';
+  return t.removed;
 };
 
 
-const getAST = (tree1, tree2, type = ['actual']) => {
+const getAST = (tree1, tree2, types = [t.actual], path = []) => {
   if (isEnd(tree1, tree2)) return tree2 || tree1;
 
   const { newTree1, newTree2 } = getNewTree(tree1, tree2);
   const keys = _.union(Object.keys(newTree1), Object.keys(newTree2));
 
-  const status = _.last(type);
+  const type = _.last(types);
 
   const ast = keys.reduce((acc, key) => {
-    const newStatus = status === 'actual' ? getStatus(newTree1, newTree2, key) : status;
+    const newType = type === t.actual ? getType(newTree1, newTree2, key) : type;
 
-    const newType = type.concat(newStatus);
-    const value = getAST(newTree1[key], newTree2[key], newType);
+    const newTypes = types.concat(newType);
+    const newPath = path.concat(key);
+    const value = getAST(newTree1[key], newTree2[key], newTypes, newPath);
     const valueOld = newTree1[key];
 
     return acc.concat({
       key,
       value,
       valueOld,
-      type: newType,
+      types: newTypes,
+      path: newPath,
     });
   }, []);
 

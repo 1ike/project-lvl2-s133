@@ -1,6 +1,6 @@
 import os from 'os';
 
-import getStatus from './libs';
+import { getTypeForShow, typeEnums as t } from './libs';
 
 const tab = '    ';
 const prefixActual = '  ';
@@ -8,9 +8,9 @@ const prefixPlus = '+ ';
 const prefixMinus = '- ';
 
 
-const getPrefix = (status) => {
-  if (status === 'actual') return prefixActual;
-  if (status === 'removed' || status === 'updated') {
+const getPrefix = (type) => {
+  if (type === t.actual) return prefixActual;
+  if (type === t.removed || type === t.updated) {
     return prefixMinus;
   }
 
@@ -26,15 +26,15 @@ const toString = (ast, level = 0) => {
       key,
       value,
       valueOld,
-      type,
+      types,
     } = item;
 
-    const status = getStatus(type);
-    const prefix = getPrefix(status);
+    const type = getTypeForShow(types);
+    const prefix = getPrefix(type);
 
     const line = `${key}: ${toString(value, level + 1)}`;
     const result = prefix + line;
-    if (status === 'updated') {
+    if (type === t.updated) {
       const addedLine = `${prefixMinus}${key}: ${valueOld}`;
       return acc.concat(prefixPlus + line, addedLine);
     }

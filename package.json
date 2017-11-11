@@ -23,11 +23,11 @@
     "debug": "^3.1.0",
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "*",
-    "eslint-plugin-flowtype": "*",
+    "eslint-plugin-flowtypes": "*",
     "eslint-plugin-import": "*",
     "eslint-plugin-jest": "*",
     "flow-bin": "^0.57",
-    "flow-typed": "*",
+    "flow-typesd": "*",
     "jest": "^21",
     "jest-cli": "*"
   },

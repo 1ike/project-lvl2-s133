@@ -1,67 +1,64 @@
 import os from 'os';
 
-import getStatus from './libs';
+import { getTypeForShow, typeEnums as t } from './libs';
 
 
-const isActualLeaf = (status, hasChildren) => status === 'actual' && !hasChildren;
+const isActualLeaf = (type, hasChildren) => type === t.actual && !hasChildren;
 
-const getNewItemNode = (status, hasChildren, newItem) => {
-  const isNotActual = hasChildren && status !== 'actual';
-  return isNotActual ? newItem : [];
+const getNewItemNode = (type, hasChildren, item) => {
+  const isNotActual = hasChildren && type !== t.actual;
+  return isNotActual ? item : [];
 };
 
-const getResultItem = (hasChildren, newItem, newItemNode) => {
-  const res = hasChildren ? newItemNode : newItem;
+const getResultItem = (hasChildren, item, newItemNode) => {
+  const res = hasChildren ? newItemNode : item;
   return res;
 };
 
-const flatten = (ast, path = []) => {
+const flatten = (ast) => {
   if (!Array.isArray(ast)) return [];
 
   const levelDiff = ast.reduce((acc, item) => {
-    const { key, value, type } = item;
+    const { value, types } = item;
 
     const hasChildren = Array.isArray(value);
 
-    const status = getStatus(type);
+    const type = getTypeForShow(types);
 
-    if (isActualLeaf(status, hasChildren)) return acc;
+    if (isActualLeaf(type, hasChildren)) return acc;
 
-    const newItem = item;
-    newItem.path = path;
+    const newItemNode = getNewItemNode(type, hasChildren, item);
 
-    const newItemNode = getNewItemNode(status, hasChildren, newItem);
-
-    const resultItem = getResultItem(hasChildren, newItem, newItemNode);
+    const resultItem = getResultItem(hasChildren, item, newItemNode);
 
 
-    return acc.concat(resultItem, flatten(value, path.concat(key)));
+    return acc.concat(resultItem, flatten(value));
   }, []);
 
   return levelDiff;
 };
 
 
-const prepareValue = (value, status) => {
+const prepareValue = (value, type) => {
   const newValue = typeof value === 'string' ? `'${value}'` : value;
-  if (status === 'added') {
+  if (type === t.added) {
     return typeof newValue === 'object' ? 'complex value' : `value: ${newValue}`;
   }
 
   return typeof value === 'string' ? `'${value}'` : value;
 };
 
-const getChanges = (value, valueOld, status) => {
-  const newValue = prepareValue(value, status);
-  const newValueOld = prepareValue(valueOld, status);
-  if (status === 'updated') {
+const getChanges = (value, valueOld, type) => {
+  const newValue = prepareValue(value, type);
+  const newValueOld = prepareValue(valueOld, type);
+  if (type === t.updated) {
     return `updated. From ${newValueOld} to ${newValue}`;
   }
-  if (status === 'added') {
+  if (type === t.added) {
     return `added with ${newValue}`;
   }
 
-  return 'removed';
+  return t.removed;
 };
 
 
@@ -73,19 +70,21 @@ const toPlainString = (ast) => {
       key,
       value,
       valueOld,
-      type,
+      types,
       path,
     } = item;
 
-    const status = getStatus(type);
+    const type = getTypeForShow(types);
 
-    if (status === 'actual') return acc;
+    if (type === t.actual) return acc;
 
-    const pathToKey = path.length ? `${path.join('.')}.` : '';
+    const pathString = `${path.slice(0, -1).join('.')}.`;
+
+    const pathToKey = path.length > 1 ? pathString : '';
 
     const keyLine = `Property '${pathToKey}${key}' was `;
 
-    const changesLine = getChanges(value, valueOld, status);
+    const changesLine = getChanges(value, valueOld, type);
 
     return acc.concat(keyLine + changesLine);
   }, []);
