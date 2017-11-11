@@ -1,6 +1,6 @@
 import os from 'os';
 
-import { getTypeForShow, typeEnums as t } from './libs';
+import { getTypeForShow, typeEnums as t } from '../libs';
 
 
 const isActualLeaf = (type, hasChildren) => type === t.actual && !hasChildren;

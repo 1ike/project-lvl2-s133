@@ -4,8 +4,8 @@ import yamlParser from 'js-yaml';
 import ini from 'ini';
 
 import genDiff from './ast';
-import toTreeString from './tree';
-import toPlainString from './plain';
+import getRenderer from './renderers';
+
 
 const parsers = {
   json: JSON.parse,
@@ -14,10 +14,6 @@ const parsers = {
   ini: ini.decode,
 };
 
-const transformersToString = {
-  tree: toTreeString,
-  plain: toPlainString,
-};
 
 const gendiff = (pathToFile1, pathToFile2, inputFormat, outputFormat = 'tree') => {
   const file1 = fs.readFileSync(pathToFile1, 'utf8');
@@ -30,10 +26,10 @@ const gendiff = (pathToFile1, pathToFile2, inputFormat, outputFormat = 'tree') =
 
   const ast = genDiff(tree1, tree2);
 
-  const toString = transformersToString[outputFormat];
+  const render = getRenderer(outputFormat);
 
 
-  return toString(ast);
+  return render(ast);
 };
 
 export default gendiff;

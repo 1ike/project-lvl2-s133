@@ -25,7 +25,7 @@ const genDiff = (tree1, tree2) => {
       }
 
       return acc.concat({
-        type: t.removed,
+        type: t.updated,
         key,
         newValue: tree2[key],
         oldValue: tree1[key],

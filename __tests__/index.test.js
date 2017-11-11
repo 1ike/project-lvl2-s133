@@ -17,7 +17,7 @@ test('gendiff json', () => {
 });
 
 
-test('gendiff yml', () => {
+test.skip('gendiff yml', () => {
   const pathToFile1 = dir + '/before.yml';
   const pathToFile2 = dir + '/after.yml';
   const inputFormatFull = 'yaml';
@@ -32,7 +32,7 @@ test('gendiff yml', () => {
 });
 
 
-test('gendiff ini', () => {
+test.skip('gendiff ini', () => {
   const pathToFile1 = dir + '/before.ini';
   const pathToFile2 = dir + '/after.ini';
   const inputFormat = 'ini';
@@ -44,7 +44,7 @@ test('gendiff ini', () => {
 });
 
 
-test('gendiff ini plain', () => {
+test.skip('gendiff ini plain', () => {
   const pathToFile1 = dir + '/before.ini';
   const pathToFile2 = dir + '/after.ini';
   const inputFormat = 'ini';
