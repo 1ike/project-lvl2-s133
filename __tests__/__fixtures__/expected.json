@@ -56,7 +56,7 @@
 
       "baz": {
         "value": "bars",
-        "valueOld": "bas",
+        "oldValue": "bas",
         "type": "updated"
       },
 
