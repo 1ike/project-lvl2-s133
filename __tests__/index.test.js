@@ -44,7 +44,7 @@ test('gendiff ini', () => {
 });
 
 
-test.skip('gendiff ini plain', () => {
+test('gendiff ini plain', () => {
   const pathToFile1 = dir + '/before.ini';
   const pathToFile2 = dir + '/after.ini';
   const inputFormat = 'ini';

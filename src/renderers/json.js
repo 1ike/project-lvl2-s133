@@ -1,6 +1,5 @@
-/*
 const render = (ast) => {
-  if (!Array.isArray(ast)) return ast;
+/*  if (!Array.isArray(ast)) return ast;
 
   const flatOutput = ast.reduce((acc, item) => {
     const {
@@ -8,29 +7,31 @@ const render = (ast) => {
       newValue,
       oldValue,
       type,
+      children,
     } = item;
+
+    const newAcc = {key:{}};
 
 
     if (type === 'updated') {
-      current.oldValue = oldValue;
+      newAcc.key.oldValue = oldValue;
       if (type === 'added') {
-        current.value = typeof newValue === 'object' ? 'complex value' : newValue;
+        newAcc.key.value = children ? 'complex value' : newValue;
       }
     } else {
-      current.value = render(oldValue, path.concat(key, 'value'));
+      newAcc.key.value = children ? render(children) : oldValue;
     }
 
     if (type) {
-      current.type = type;
+      newAcc.type = type;
     }
-
-    return acc;
+console.log('newAcc:', newAcc);
+    return newAcc;
   }, {});
 
 
-  return JSON.stringify(flatOutput);
+  return JSON.stringify(flatOutput);*/
 };
 
 
 export default render;
-*/
