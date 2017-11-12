@@ -18,8 +18,7 @@ const render = (ast, path = []) => {
     const keyLine = `Property '${pathToKey}${key}' was `;
 
     if (type === 'added') {
-      const value = _.isPlainObject(newValue) ? 'complex value' :
-        `value: '${newValue}'`;
+      const value = _.isPlainObject(newValue) ? 'complex value' : `value: '${newValue}'`;
       const line = `${keyLine}added with ${value}`;
 
       return [...acc, line];

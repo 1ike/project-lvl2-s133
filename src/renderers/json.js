@@ -19,12 +19,16 @@ const render = (ast) => {
       acc[key].value = _.isPlainObject(newValue) ? 'complex value' : newValue;
     } else if (type === 'removed') {
       acc[key].value = _.isPlainObject(oldValue) ? 'complex value' : oldValue;
+    } else if (type === 'unknown') {
+      acc[key].value = render(children);
     } else {
-      acc[key].value = children ? render(children) : oldValue;
+      acc[key].value = oldValue;
     }
+
     if (type) {
       acc[key].type = type;
     }
+
     return acc;
   }, {});
 
