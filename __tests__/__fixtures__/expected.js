@@ -1,4 +1,4 @@
-{
+export default {
   "common": {
     "value": {
 
@@ -8,7 +8,7 @@
       },
 
       "setting2": {
-        "value": 200,
+        "value": "200",
         "type": "removed"
       },
 
@@ -18,14 +18,15 @@
       },
 
       "setting6": {
-        "value": {
+        "value": "complex value",
+/*        "value": {
 
           "key": {
             "value": "value",
             "type": "removed"
           }
 
-        },
+        },*/
         "type": "removed"
       },
 
@@ -35,14 +36,15 @@
       },
 
       "setting5": {
-        "value": {
+        "value": "complex value",
+/*        "value": {
 
           "key5": {
             "value": "value5",
             "type": "added"
           }
 
-        },
+        },*/
         "type": "added"
       },
 
@@ -55,8 +57,8 @@
     "value": {
 
       "baz": {
-        "value": "bars",
         "oldValue": "bas",
+        "value": "bars",
         "type": "updated"
       },
 
@@ -70,22 +72,24 @@
   },
 
   "group2": {
-    "value": {
+    "value": "complex value",
+/*    "value": {
       "abc": {
         "value": 12345,
         "type": "removed"
       }
-    },
+    },*/
     "type": "removed"
   },
 
   "group3": {
-    "value": {
+    "value": "complex value",
+/*    "value": {
       "fee": {
         "value": 100500,
         "type": "added"
       }
-    },
+    },*/
     "type": "added"
   }
 

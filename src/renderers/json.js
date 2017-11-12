@@ -1,7 +1,7 @@
-const render = (ast) => {
-/*  if (!Array.isArray(ast)) return ast;
+import _ from 'lodash';
 
-  const flatOutput = ast.reduce((acc, item) => {
+const render = (ast) => {
+  const json = ast.reduce((acc, item) => {
     const {
       key,
       newValue,
@@ -10,27 +10,25 @@ const render = (ast) => {
       children,
     } = item;
 
-    const newAcc = {key:{}};
-
+    acc[key] = {};
 
     if (type === 'updated') {
-      newAcc.key.oldValue = oldValue;
-      if (type === 'added') {
-        newAcc.key.value = children ? 'complex value' : newValue;
-      }
+      acc[key].oldValue = oldValue;
+      acc[key].value = newValue;
+    } else if (type === 'added') {
+      acc[key].value = _.isPlainObject(newValue) ? 'complex value' : newValue;
+    } else if (type === 'removed') {
+      acc[key].value = _.isPlainObject(oldValue) ? 'complex value' : oldValue;
     } else {
-      newAcc.key.value = children ? render(children) : oldValue;
+      acc[key].value = children ? render(children) : oldValue;
     }
-
     if (type) {
-      newAcc.type = type;
+      acc[key].type = type;
     }
-console.log('newAcc:', newAcc);
-    return newAcc;
+    return acc;
   }, {});
 
-
-  return JSON.stringify(flatOutput);*/
+  return json;
 };
 
 

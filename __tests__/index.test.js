@@ -2,11 +2,12 @@ import fs from 'fs';
 import os from 'os';
 
 import gendiff from '../src';
+import obj from './__fixtures__/expected';
 
 const dir = __dirname + '/__fixtures__';
 
 
-test('gendiff json', () => {
+test('gendiff tree', () => {
   const pathToFile1 = dir + '/before.json';
   const pathToFile2 = dir + '/after.json';
 
@@ -54,4 +55,18 @@ test('gendiff ini plain', () => {
   const current = gendiff(pathToFile1, pathToFile2, inputFormat, outputFormat);
 
   expect(current).toBe(expected);
+});
+
+
+test('gendiff ini json', () => {
+  const pathToFile1 = dir + '/before.json';
+  const pathToFile2 = dir + '/after.json';
+  const inputFormat = 'json';
+  const outputFormat = 'json';
+
+  const expected = obj;
+  const current = gendiff(pathToFile1, pathToFile2, inputFormat, outputFormat);
+
+  expect(current).toEqual(expected);
+  expect(JSON.stringify(current, null, 2)).toEqual(JSON.stringify(expected, null, 2));
 });

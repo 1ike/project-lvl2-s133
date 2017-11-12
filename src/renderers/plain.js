@@ -19,19 +19,19 @@ const render = (ast, path = []) => {
 
     switch (type) {
       case 'added':
-        const value = typeof newValue === 'object' ? 'complex value' :
+        const value = _.isPlainObject(newValue) ? 'complex value' :
           `value: '${newValue}'`;
         const line = `${keyLine}added with ${value}`;
 
-        return acc.concat(line);
+        return [...acc, line];
         break;
 
       case 'updated':
-        return acc.concat(`${keyLine}updated. From '${oldValue}' to '${newValue}'`);
+        return [...acc, `${keyLine}updated. From '${oldValue}' to '${newValue}'`];
         break;
 
       case 'removed':
-        return acc.concat(`${keyLine}removed`);
+        return [...acc, `${keyLine}removed`];
         break;
 
       default:

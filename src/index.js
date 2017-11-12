@@ -19,10 +19,10 @@ const gendiff = (pathToFile1, pathToFile2, inputFormat, outputFormat = 'tree') =
   const file1 = fs.readFileSync(pathToFile1, 'utf8');
   const file2 = fs.readFileSync(pathToFile2, 'utf8');
 
-  const pars = parsers[inputFormat];
+  const parse = parsers[inputFormat];
 
-  const tree1 = pars(file1);
-  const tree2 = pars(file2);
+  const tree1 = parse(file1);
+  const tree2 = parse(file2);
 
   const ast = genDiff(tree1, tree2);
 

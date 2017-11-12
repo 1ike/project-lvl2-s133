@@ -1,5 +1,5 @@
 import os from 'os';
-
+import _ from 'lodash';
 
 const tab = '    ';
 const prefixActual = '  ';
@@ -8,7 +8,7 @@ const prefixMinus = '- ';
 
 
 const toString = (value, level) => {
-  if (typeof value !== 'object') return value;
+  if (!_.isPlainObject(value)) return value;
 
   const margin = `${tab.repeat(level + 1)}`;
   const result = JSON.stringify(value, null, 4).replace(/"/g, '');
@@ -29,23 +29,23 @@ const render = (ast, level = 0) => {
 
     if (type === 'actual') {
       if (!children) {
-        return acc.concat(`${prefixActual}${key}: ${oldValue}`);
+        return [...acc, `${prefixActual}${key}: ${oldValue}`];
       }
 
-      return acc.concat(`${prefixActual}${key}: ${render(children, level + 1)}`);
+      return [...acc, `${prefixActual}${key}: ${render(children, level + 1)}`];
     }
 
     if (type === 'updated') {
       const newLine = `${prefixPlus}${key}: ${newValue}`;
       const oldLine = `${prefixMinus}${key}: ${oldValue}`;
-      return acc.concat(newLine, oldLine);
+      return [...acc, newLine, oldLine];
     }
 
     if (type === 'removed') {
-      return acc.concat(`${prefixMinus}${key}: ${toString(oldValue, level)}`);
+      return [...acc, `${prefixMinus}${key}: ${toString(oldValue, level)}`];
     }
 
-    return acc.concat(`${prefixPlus}${key}: ${toString(newValue, level)}`);
+    return [...acc, `${prefixPlus}${key}: ${toString(newValue, level)}`];
   }, []);
 
   const margin = tab.repeat(level);
