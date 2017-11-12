@@ -50,7 +50,7 @@ export default {
 
 
     },
-    "type": "actual"
+    "type": "unknown"
   },
 
   "group1": {
@@ -68,7 +68,7 @@ export default {
       }
 
     },
-    "type": "actual"
+    "type": "unknown"
   },
 
   "group2": {

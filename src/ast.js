@@ -8,7 +8,7 @@ const genDiff = (tree1, tree2) => {
     if (tree1[key] && tree2[key]) {
       if (_.isPlainObject(tree1[key]) && _.isPlainObject(tree2[key])) {
         return [...acc, {
-          type: 'actual',
+          type: 'unknown',
           key,
           children: genDiff(tree1[key], tree2[key]),
         }];

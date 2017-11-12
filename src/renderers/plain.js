@@ -17,28 +17,27 @@ const render = (ast, path = []) => {
     const pathToKey = path.length > 0 ? pathString : '';
     const keyLine = `Property '${pathToKey}${key}' was `;
 
-    switch (type) {
-      case 'added':
-        const value = _.isPlainObject(newValue) ? 'complex value' :
-          `value: '${newValue}'`;
-        const line = `${keyLine}added with ${value}`;
+    if (type === 'added') {
+      const value = _.isPlainObject(newValue) ? 'complex value' :
+        `value: '${newValue}'`;
+      const line = `${keyLine}added with ${value}`;
 
-        return [...acc, line];
-        break;
-
-      case 'updated':
-        return [...acc, `${keyLine}updated. From '${oldValue}' to '${newValue}'`];
-        break;
-
-      case 'removed':
-        return [...acc, `${keyLine}removed`];
-        break;
-
-      default:
-        return acc.concat(children ? render(children, newPath) : acc);
-        break;
+      return [...acc, line];
     }
 
+    if (type === 'updated') {
+      return [...acc, `${keyLine}updated. From '${oldValue}' to '${newValue}'`];
+    }
+
+    if (type === 'removed') {
+      return [...acc, `${keyLine}removed`];
+    }
+
+    if (type === 'unknown') {
+      return acc.concat(render(children, newPath));
+    }
+
+    return acc.concat(acc);
   }, []);
 
   return _.uniq(flatOutput).join(os.EOL);

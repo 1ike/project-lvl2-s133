@@ -27,12 +27,12 @@ const render = (ast, level = 0) => {
       children,
     } = item;
 
-    if (type === 'actual') {
-      if (!children) {
-        return [...acc, `${prefixActual}${key}: ${oldValue}`];
-      }
-
+    if (type === 'unknown') {
       return [...acc, `${prefixActual}${key}: ${render(children, level + 1)}`];
+    }
+
+    if (type === 'actual') {
+      return [...acc, `${prefixActual}${key}: ${oldValue}`];
     }
 
     if (type === 'updated') {
