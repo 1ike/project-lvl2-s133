@@ -1,6 +1,5 @@
 import os from 'os';
 
-import t from '../libs';
 
 const tab = '    ';
 const prefixActual = '  ';
@@ -27,7 +26,7 @@ const render = (ast, level = 0) => {
       type,
     } = item;
 
-    if (type === t.actual) {
+    if (type === 'actual') {
       if (typeof oldValue !== 'object') {
         return acc.concat(`${prefixActual}${key}: ${oldValue}`);
       }
@@ -35,13 +34,13 @@ const render = (ast, level = 0) => {
       return acc.concat(`${prefixActual}${key}: ${render(oldValue, level + 1)}`);
     }
 
-    if (type === t.updated) {
+    if (type === 'updated') {
       const newLine = `${prefixPlus}${key}: ${newValue}`;
       const oldLine = `${prefixMinus}${key}: ${oldValue}`;
       return acc.concat(newLine, oldLine);
     }
 
-    if (type === t.removed) {
+    if (type === 'removed') {
       return acc.concat(`${prefixMinus}${key}: ${toString(oldValue, level)}`);
     }
 

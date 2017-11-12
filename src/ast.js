@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-import t from './libs';
-
 
 const genDiff = (tree1, tree2) => {
   const keys = _.union(Object.keys(tree1), Object.keys(tree2));
@@ -10,18 +8,18 @@ const genDiff = (tree1, tree2) => {
     if (tree1[key] && tree2[key]) {
       if (typeof tree1[key] === 'object' && typeof tree2[key] === 'object') {
         return acc.concat({
-          type: t.actual,
+          type: 'actual',
           key,
-          oldValue: genDiff(tree1[key], tree2[key]),
+          children: genDiff(tree1[key], tree2[key]),
         });
       }
 
       if (tree1[key] === tree2[key]) {
-        return acc.concat({ type: t.actual, key, oldValue: tree1[key] });
+        return acc.concat({ type: 'actual', key, oldValue: tree1[key] });
       }
 
       return acc.concat({
-        type: t.updated,
+        type: 'updated',
         key,
         newValue: tree2[key],
         oldValue: tree1[key],
@@ -29,10 +27,10 @@ const genDiff = (tree1, tree2) => {
     }
 
     if (!tree2[key]) {
-      return acc.concat({ type: t.removed, key, oldValue: tree1[key] });
+      return acc.concat({ type: 'removed', key, oldValue: tree1[key] });
     }
 
-    return acc.concat({ type: t.added, key, newValue: tree2[key] });
+    return acc.concat({ type: 'added', key, newValue: tree2[key] });
   }, []);
 
   return ast;
