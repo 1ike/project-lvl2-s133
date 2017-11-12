@@ -24,14 +24,15 @@ const render = (ast, level = 0) => {
       newValue,
       oldValue,
       type,
+      children,
     } = item;
 
     if (type === 'actual') {
-      if (typeof oldValue !== 'object') {
+      if (!children) {
         return acc.concat(`${prefixActual}${key}: ${oldValue}`);
       }
 
-      return acc.concat(`${prefixActual}${key}: ${render(oldValue, level + 1)}`);
+      return acc.concat(`${prefixActual}${key}: ${render(children, level + 1)}`);
     }
 
     if (type === 'updated') {
