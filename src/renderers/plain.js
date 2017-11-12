@@ -34,8 +34,7 @@ const render = (ast, path = []) => {
         break;
 
       case 'removed':
-        const dline = `${keyLine} removed`;
-        return acc.concat(dline, render(ast[key], newPath));
+        return acc.concat(`${keyLine} removed`, render(ast[key], newPath));
         break;
 
       default:

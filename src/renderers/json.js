@@ -1,7 +1,5 @@
-import t from '../libs';
-
-
-const render = (ast, path = []) => {
+/*
+const render = (ast) => {
   if (!Array.isArray(ast)) return ast;
 
   const flatOutput = ast.reduce((acc, item) => {
@@ -12,9 +10,6 @@ const render = (ast, path = []) => {
       type,
     } = item;
 
-/*
-
-    const current = path.reduce((obj, step) => obj[step], acc);
 
     if (type === 'updated') {
       current.oldValue = oldValue;
@@ -28,7 +23,6 @@ const render = (ast, path = []) => {
     if (type) {
       current.type = type;
     }
-*/
 
     return acc;
   }, {});
@@ -39,3 +33,4 @@ const render = (ast, path = []) => {
 
 
 export default render;
+*/
