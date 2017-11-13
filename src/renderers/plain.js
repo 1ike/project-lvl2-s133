@@ -32,7 +32,7 @@ const render = (ast, path = []) => {
       return [...acc, `${keyLine}removed`];
     }
 
-    if (type === 'unknown') {
+    if (type === 'nested') {
       return acc.concat(render(children, newPath));
     }
 

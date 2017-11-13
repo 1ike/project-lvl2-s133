@@ -57,16 +57,14 @@ test('gendiff ini plain', () => {
   expect(current).toBe(expected);
 });
 
-
 test('gendiff ini json', () => {
-  const pathToFile1 = dir + '/before.json';
-  const pathToFile2 = dir + '/after.json';
-  const inputFormat = 'json';
+  const pathToFile1 = dir + '/before.ini';
+  const pathToFile2 = dir + '/after.ini';
+  const inputFormat = 'ini';
   const outputFormat = 'json';
+  const expected = fs.readFileSync(dir + '/expected-json.txt', 'utf8');
 
-  const expected = obj;
   const current = gendiff(pathToFile1, pathToFile2, inputFormat, outputFormat);
 
-  expect(current).toEqual(expected);
-  expect(JSON.stringify(current, null, 2)).toEqual(JSON.stringify(expected, null, 2));
+  expect(current).toBe(expected);
 });

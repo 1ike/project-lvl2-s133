@@ -28,7 +28,6 @@ const gendiff = (pathToFile1, pathToFile2, inputFormat, outputFormat = 'tree') =
 
   const render = getRenderer(outputFormat);
 
-
   return render(ast);
 };
 

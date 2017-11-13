@@ -27,7 +27,7 @@ const render = (ast, level = 0) => {
       children,
     } = item;
 
-    if (type === 'unknown') {
+    if (type === 'nested') {
       return [...acc, `${prefixActual}${key}: ${render(children, level + 1)}`];
     }
 

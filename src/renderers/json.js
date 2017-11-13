@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const render = (ast) => {
+/*const render = (ast) => {
   const json = ast.reduce((acc, item) => {
     const {
       key,
@@ -10,30 +10,30 @@ const render = (ast) => {
       children,
     } = item;
 
-    acc[key] = {};
+    const obj = Object.assign({}, acc);
+    obj[key] = {};
 
     if (type === 'updated') {
-      acc[key].oldValue = oldValue;
-      acc[key].value = newValue;
+      obj[key].oldValue = oldValue;
+      obj[key].value = newValue;
     } else if (type === 'added') {
-      acc[key].value = _.isPlainObject(newValue) ? 'complex value' : newValue;
+      obj[key].value = _.isPlainObject(newValue) ? 'complex value' : newValue;
     } else if (type === 'removed') {
-      acc[key].value = _.isPlainObject(oldValue) ? 'complex value' : oldValue;
-    } else if (type === 'unknown') {
-      acc[key].value = render(children);
+      obj[key].value = _.isPlainObject(oldValue) ? 'complex value' : oldValue;
+    } else if (type === 'nested') {
+      obj[key].value = render(children);
     } else {
-      acc[key].value = oldValue;
+      obj[key].value = oldValue;
     }
 
     if (type) {
-      acc[key].type = type;
+      obj[key].type = type;
     }
 
-    return acc;
+    return obj;
   }, {});
 
-  return json;
-};
+  return ;
+};*/
 
-
-export default render;
+export default ast => JSON.stringify(ast);
