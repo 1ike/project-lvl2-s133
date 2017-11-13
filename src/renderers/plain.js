@@ -3,7 +3,7 @@ import os from 'os';
 import _ from 'lodash';
 
 const render = (ast, path = []) => {
-  const flatOutput = ast.reduce((acc, item) => {
+  const transformed = ast.map((item) => {
     const {
       key,
       newValue,
@@ -12,34 +12,33 @@ const render = (ast, path = []) => {
       children,
     } = item;
 
-    const newPath = path.concat(key);
+    const newPath = [...path, key];
     const pathString = `${newPath.slice(0, -1).join('.')}.`;
     const pathToKey = path.length > 0 ? pathString : '';
     const keyLine = `Property '${pathToKey}${key}' was `;
 
     if (type === 'added') {
       const value = _.isPlainObject(newValue) ? 'complex value' : `value: '${newValue}'`;
-      const line = `${keyLine}added with ${value}`;
 
-      return [...acc, line];
+      return `${keyLine}added with ${value}`;
     }
 
     if (type === 'updated') {
-      return [...acc, `${keyLine}updated. From '${oldValue}' to '${newValue}'`];
+      return `${keyLine}updated. From '${oldValue}' to '${newValue}'`;
     }
 
     if (type === 'removed') {
-      return [...acc, `${keyLine}removed`];
+      return `${keyLine}removed`;
     }
 
-    if (type === 'nested') {
-      return acc.concat(render(children, newPath));
+    if (type === 'actual') {
+      return '';
     }
 
-    return acc.concat(acc);
-  }, []);
+    return render(children, newPath);
+  });
 
-  return _.uniq(flatOutput).join(os.EOL);
+  return _.compact(_.flattenDeep(transformed)).join(os.EOL);
 };
 
 

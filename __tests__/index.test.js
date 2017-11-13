@@ -2,7 +2,6 @@ import fs from 'fs';
 import os from 'os';
 
 import gendiff from '../src';
-import obj from './__fixtures__/expected';
 
 const dir = __dirname + '/__fixtures__';
 
